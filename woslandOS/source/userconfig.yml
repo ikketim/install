@@ -71,9 +71,9 @@ autoinstall:
       echo
       echo 'Put in your discord bot token'
       echo 'in case no token is give now you have to change it later'
-      read bot-token
+      read bot_token
       echo
-      echo "$bot-token" >> /home/WOSland/bot/bot_token.txt
+      echo ${bot_token} >> /home/WOSland/bot/bot_token.txt
       echo 
       echo *************************
       echo
@@ -99,9 +99,15 @@ autoinstall:
   user-data: # Commands here run during first boot (cannot be interactive)
     runcmd:
       - cd /home/WOSland/bot
-      - python3 -m venv venv 
-      - gsettings set org.gnome.desktop.background picture-uri file:///home/WOSland/Pictures/wosland.jpg
-      - gsettings set org.gnome.desktop.background picture-uri-dark file:///home/WOSland/Pictures/wosland.jpg
+      - python3 -m venv venv
+      - cd /home/WOSland/Pictures/
+      - wget https://raw.github.com/ikketim/install/main/woslandOS/source/woslandOS.png
+      - gsettings set org.gnome.desktop.background picture-uri file:///home/WOSland/Pictures/woslandOS.png
+      - gsettings set org.gnome.desktop.background picture-uri-dark file:///home/WOSland/Pictures/woslandOS.png
+      - curl -o /etc/systemd/system/wosbot.service https://raw.github.com/ikketim/install/main/woslandOS/source/wosbot.service
+      - systemctl daemon-reexec
+      - systemctl daemon-reload
+      - systemctl enable wosbot.service
       - |
         #!/usr/bin/env bash
         echo ''
@@ -113,4 +119,3 @@ autoinstall:
         echo ' you can change this password with the command passwd '
         echo '***************************************'
         echo ''
-
